@@ -1,15 +1,15 @@
-import React from "react";
+import React,{useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import {Card} from "react-bootstrap";
 import AddTodo from "./AddTodo";
 import EditTodo from "./EditTodo";
-import {setAddTodoModalStatus,setTodoData,setEditTodoModalStatus,deleteTodoData,addCompleteTodoData
-  ,resetTodoData} from "../Redux/Actions/allActions";
+import {setAddTodoModalStatus,setTodoData,setEditTodoModalStatus,deleteTodoData
+  ,addCompleteTodoData} from "../Redux/Actions/allActions";
 import "./Style.css"
-function ShowList() {
-  const addModalStatus=useSelector(state=>state.reducer.setAddModal.status);
-  const editModalStatus=useSelector(state=>state.reducer.setEditModal.status);
+export default function ShowList() {
+  const addModalStatus=useSelector(state=>state.reducer.setAddModal);
+  const editModalStatus=useSelector(state=>state.reducer.setEditModal);
   const data=useSelector(state=>state.reducer.todoData)
   const completeData=useSelector(state=>state.reducer.completeTodoData)
   const dispatch=useDispatch();
@@ -26,12 +26,11 @@ const deleteData=(todo)=>{
 const addCompleteData=(todo)=>{
   dispatch(addCompleteTodoData(todo))
   dispatch(deleteTodoData(todo.id))
-
 }
-  return (
+return (
     <div style={{ textAlign:"left"}}>
-        {addModalStatus?<AddTodo/>:""}
-        {editModalStatus?<EditTodo/>:""}
+        {addModalStatus.status?<AddTodo/>:""}
+        {editModalStatus.status?<EditTodo/>:""}
       <h1 style={{ textAlign:"center"}}>
         <Button variant="primary" onClick={() => addTodoModal()}>
           Add New Todo
@@ -42,12 +41,12 @@ const addCompleteData=(todo)=>{
         <h2>Todo</h2>
         {data.map((todo)=>
           <Card style={{ width: '15rem' , height: "auto" , margin:"15px"}}>
-            <Card.Body onClick={()=> editTodoModal(todo) }>
-              <Card.Title>Title:-{todo.title}</Card.Title>
+            <Card.Body>
+              <Card.Title onClick={()=>editTodoModal(todo)}>Title:-{todo.title}</Card.Title>
                 <Card.Text>Desc:-{todo.desc}</Card.Text>
-              </Card.Body>
-              <Button variant="link" onClick={()=>deleteData(todo)}>Delete</Button>
-              <Button variant="link" onClick={()=> addCompleteData(todo) }>Complete</Button>
+                <Button variant="primary" onClick={()=> deleteData(todo)}>Delete</Button>
+                <Button variant="primary" className="mx-3" onClick={()=>addCompleteData(todo)}>Complete</Button>
+            </Card.Body>
           </Card>)}
       </div>
       <div>
@@ -58,10 +57,10 @@ const addCompleteData=(todo)=>{
             <Card.Body>
               <Card.Title>Title:-{todo.title}</Card.Title>
                 <Card.Text>Desc:-{todo.desc}</Card.Text>
-              </Card.Body>
+            </Card.Body>
           </Card>)}
       </div>
     </div>
   );
 }
-export default ShowList;
+

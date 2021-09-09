@@ -3,9 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import React from "react";
 import {useDispatch,useSelector} from "react-redux";
-import {setEditTodoModalStatus,editTodoData} from "../Redux/Actions/allActions";
-import cuid from "cuid";
-
+import {setEditTodoModalStatus,editTodoData,resetTodo} from "../Redux/Actions/allActions";
 function EditTodo() {
   const dispatch=useDispatch();
   const editData=useSelector(state=>state.reducer.setTodo)
@@ -18,9 +16,10 @@ function EditTodo() {
     dispatch(editTodoData({
       title:e.target.title.value,
       desc:e.target.desc.value,
-      id:cuid()}))
+      id:editData.id
+    }))
+    dispatch(resetTodo())
     handleClose();
-    
   };
 
   return (

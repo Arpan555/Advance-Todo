@@ -5,7 +5,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddTodoModalStatus,addTodoData} from "../Redux/Actions/allActions";
 import cuid from "cuid";
-
 function AddTodo() {
   const dispatch = useDispatch();
   const show = useSelector(state=>state.reducer.setAddModal);
@@ -20,7 +19,6 @@ function AddTodo() {
       id:cuid()}))
     handleClose();
   };
-
   return (
     <div>
       <Modal show={show.status} onHide={handleClose}>
@@ -34,7 +32,6 @@ function AddTodo() {
               <Form.Control type="text" name="title" placeholder="Enter title" 
               required/>
             </Form.Group>
-
             <Form.Group className="mb-2" controlId="formBasicEmail">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -43,7 +40,6 @@ function AddTodo() {
                 placeholder="Enter Description"
               required/>
             </Form.Group>
-
             <center>
               <Button variant="primary" type="submit">
                 Submit
