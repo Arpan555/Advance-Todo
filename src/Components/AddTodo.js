@@ -5,6 +5,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddTodoModalStatus,addTodoData} from "../Redux/Actions/allActions";
 import cuid from "cuid";
+const today=new Date()
+const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+const time = today.getHours() + ':' + today.getMinutes()+":"+ today.getSeconds();
 function AddTodo() {
   const dispatch = useDispatch();
   const show = useSelector(state=>state.reducer.setAddModal);
@@ -14,6 +17,9 @@ function AddTodo() {
   const handleSubmit=(e)=>{
     e.preventDefault();
     dispatch(addTodoData({
+      set:false,
+      date:date,
+      time:time,
       title:e.target.title.value,
       desc:e.target.desc.value,
       id:cuid()}))

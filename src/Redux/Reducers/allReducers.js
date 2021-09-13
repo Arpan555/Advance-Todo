@@ -1,12 +1,12 @@
 import {ADD_TODO_DATA,ADD_MODAL_STATUS,SET_TODO_DATA,
-  EDIT_MODAL_STATUS,EDIT_TODO_DATA,DELETE_TODO_DATA,
-  RESET_TODO, ADD_COMPLETE_TODO_DATA} from "../Actions/index";
+  EDIT_MODAL_STATUS,EDIT_TODO_DATA,
+  RESET_TODO,SELECTED_TODO_DATA,HANDLE_MULTIPLE_DELETE_DATA} from "../Actions/index";
 const initialState = {
     todoData:[],
-    completeTodoData:[],
     setTodo:{title:""},
     setAddModal:{status:false},
     setEditModal:{status:false},
+    selectedTodoData:{}
     };
 export default function reducer(state = initialState, action){
     switch (action.type) {
@@ -20,16 +20,10 @@ export default function reducer(state = initialState, action){
             ...state,
             setAddModal:{...state.setAddModal,...action.payload},
         };
-    
-      case DELETE_TODO_DATA:
-        return{
-          ...state,
-          todoData:[...state.todoData.filter((setTodo)=>setTodo.id!==action.payload)],
-        }
-        case ADD_COMPLETE_TODO_DATA:
+        case HANDLE_MULTIPLE_DELETE_DATA:
           return{
             ...state,
-            completeTodoData:[...state.completeTodoData,action.payload]
+            todoData: state.todoData.filter((data) => data.id !== action.payload.map(d=>d.id))
           }
         case EDIT_MODAL_STATUS:
           return{
@@ -54,6 +48,10 @@ export default function reducer(state = initialState, action){
               return todo;
               })
               }
+        case SELECTED_TODO_DATA:
+          return{
+            ...state,
+            selectedTodoData:action.payload          }
         default:
           return state;
     }

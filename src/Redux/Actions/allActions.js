@@ -6,7 +6,9 @@ import {
     EDIT_TODO_DATA,
     DELETE_TODO_DATA,
     ADD_COMPLETE_TODO_DATA,
-    RESET_TODO } from "./index";
+    RESET_TODO,
+    SELECTED_TODO_DATA,
+    HANDLE_MULTIPLE_DELETE_DATA} from "./index";
 export const addTodoData=(data)=>{
       return{
           type:ADD_TODO_DATA,
@@ -52,5 +54,17 @@ export const editTodoData=(data)=>{
 export const resetTodo=()=>{
   return{
     type:RESET_TODO
+  }
+}
+export const selectedTodoData=(data)=>{
+  return{
+    type:SELECTED_TODO_DATA,
+    payload:data
+  }
+}
+export const handleMultipleDeleteData=(data)=>{
+  return{
+    type:HANDLE_MULTIPLE_DELETE_DATA,
+    payload:data
   }
 }
