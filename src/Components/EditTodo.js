@@ -1,12 +1,10 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import React from "react";
+import React,{useEffect} from "react";
 import {useDispatch,useSelector} from "react-redux";
 import {setEditTodoModalStatus,editTodoData,resetTodo} from "../Redux/Actions/allActions";
-const today=new Date()
-const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-const time = today.getHours() + ':' + today.getMinutes()+":"+ today.getSeconds();
+let uDateTime=new Date().toISOString()
 function EditTodo() {
   const dispatch=useDispatch();
   const editData=useSelector(state=>state.reducer.setTodo)
@@ -14,21 +12,23 @@ function EditTodo() {
   const handleClose=()=>{
     dispatch(setEditTodoModalStatus({status:false}))
   }
+  useEffect(() => {
+    uDateTime=new Date().toISOString()
+   },[uDateTime])
+ 
   const handleSubmit=(e)=>{
     e.preventDefault();
     dispatch(editTodoData({
-      udate:date,
-      utime:time,
-      date:editData.date,
-      time:editData.time,
       title:e.target.title.value,
       desc:e.target.desc.value,
-      id:editData.id
+      id:editData.id,
+      dateTime:editData.dateTime,
+      uDateTime:uDateTime
     }))
     dispatch(resetTodo())
     handleClose();
   };
-
+  
   return (
     <div>
       <Modal show={show.status} onHide={handleClose}>

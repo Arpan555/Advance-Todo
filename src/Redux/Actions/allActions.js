@@ -4,12 +4,15 @@ import {
     SET_TODO_DATA,
     EDIT_MODAL_STATUS,
     EDIT_TODO_DATA,
-    DELETE_TODO_DATA,
-    ADD_COMPLETE_TODO_DATA,
     RESET_TODO,
-    SELECTED_TODO_DATA,
-    HANDLE_MULTIPLE_DELETE_DATA} from "./index";
+    HANDLE_MULTIPLE_DELETE_DATA,
+  HANDLE_MULTIPLE_COMPLETE_DATA} from "./index";
+const createData=[]
+const updateData=[]
+const completeData=[]
 export const addTodoData=(data)=>{
+      createData.push(data)
+      localStorage.setItem("createdData",JSON.stringify(createData))
       return{
           type:ADD_TODO_DATA,
           payload:data
@@ -21,18 +24,6 @@ export const setAddTodoModalStatus=(status)=>{
     payload: status,
     }
   };
-  export const deleteTodoData=(data)=>{
-    return{
-      type:DELETE_TODO_DATA,
-      payload:data
-    }
-  }
-  export const addCompleteTodoData=(data)=>{
-    return{
-      type:ADD_COMPLETE_TODO_DATA,
-      payload:data
-    }
-  }
   export const setEditTodoModalStatus=(status)=>{
     return{
       type:EDIT_MODAL_STATUS,
@@ -40,13 +31,15 @@ export const setAddTodoModalStatus=(status)=>{
     }
   }
   export const setTodoData=(data)=>{
-   return{
+    return{
      type:SET_TODO_DATA,
      payload:data
    }
 }
 export const editTodoData=(data)=>{
-  return{
+  updateData.push(data)
+  localStorage.setItem("updatedData",JSON.stringify(updateData))
+   return{
     type:EDIT_TODO_DATA,
     payload:data
   }
@@ -56,15 +49,17 @@ export const resetTodo=()=>{
     type:RESET_TODO
   }
 }
-export const selectedTodoData=(data)=>{
-  return{
-    type:SELECTED_TODO_DATA,
-    payload:data
-  }
-}
 export const handleMultipleDeleteData=(data)=>{
   return{
     type:HANDLE_MULTIPLE_DELETE_DATA,
+    payload:data
+  }
+}
+export const handleMultipleCompleteData=(data)=>{
+  completeData.push(data)
+  localStorage.setItem("completedData",JSON.stringify(completeData))
+   return{
+    type:HANDLE_MULTIPLE_COMPLETE_DATA,
     payload:data
   }
 }

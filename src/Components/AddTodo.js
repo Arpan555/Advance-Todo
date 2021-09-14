@@ -1,30 +1,35 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import React from "react";
+import React,{useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddTodoModalStatus,addTodoData} from "../Redux/Actions/allActions";
 import cuid from "cuid";
-const today=new Date()
-const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-const time = today.getHours() + ':' + today.getMinutes()+":"+ today.getSeconds();
+let dateTime=new Date().toISOString()
 function AddTodo() {
   const dispatch = useDispatch();
   const show = useSelector(state=>state.reducer.setAddModal);
   const handleClose=()=>{
     dispatch(setAddTodoModalStatus({status:false}));
   }
+  useEffect(() => {
+     dateTime=new Date().toISOString()
+    },[])
   const handleSubmit=(e)=>{
     e.preventDefault();
     dispatch(addTodoData({
       set:false,
-      date:date,
-      time:time,
       title:e.target.title.value,
       desc:e.target.desc.value,
-      id:cuid()}))
+      dateTime:dateTime,
+      id:cuid()},
+      
+      ))
     handleClose();
   };
+  useEffect(() => {
+   
+  }, [])
   return (
     <div>
       <Modal show={show.status} onHide={handleClose}>
