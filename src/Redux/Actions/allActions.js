@@ -6,7 +6,8 @@ import {
     EDIT_TODO_DATA,
     RESET_TODO,
     HANDLE_MULTIPLE_DELETE_DATA,
-  HANDLE_MULTIPLE_COMPLETE_DATA} from "./index";
+  HANDLE_MULTIPLE_COMPLETE_DATA,
+  HANDLE_MULTIPLE_COPY_DATA} from "./index";
 const createData=[]
 const updateData=[]
 const completeData=[]
@@ -60,6 +61,12 @@ export const handleMultipleCompleteData=(data)=>{
   localStorage.setItem("completedData",JSON.stringify(completeData))
    return{
     type:HANDLE_MULTIPLE_COMPLETE_DATA,
+    payload:data
+  }
+}
+export const handleMultipleCopyData=(data)=>{
+  return{
+    type:HANDLE_MULTIPLE_COPY_DATA,
     payload:data
   }
 }

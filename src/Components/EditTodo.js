@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import React,{useEffect} from "react";
 import {useDispatch,useSelector} from "react-redux";
 import {setEditTodoModalStatus,editTodoData,resetTodo} from "../Redux/Actions/allActions";
-let uDateTime=new Date().toISOString()
 function EditTodo() {
   const dispatch=useDispatch();
   const editData=useSelector(state=>state.reducer.setTodo)
@@ -12,10 +11,7 @@ function EditTodo() {
   const handleClose=()=>{
     dispatch(setEditTodoModalStatus({status:false}))
   }
-  useEffect(() => {
-    uDateTime=new Date().toISOString()
-   },[uDateTime])
- 
+  
   const handleSubmit=(e)=>{
     e.preventDefault();
     dispatch(editTodoData({
@@ -23,7 +19,8 @@ function EditTodo() {
       desc:e.target.desc.value,
       id:editData.id,
       dateTime:editData.dateTime,
-      uDateTime:uDateTime
+      uDateTime:new Date().toISOString(),
+      
     }))
     dispatch(resetTodo())
     handleClose();
