@@ -2,13 +2,14 @@ import {ADD_TODO_DATA,ADD_MODAL_STATUS,SET_TODO_DATA,
   EDIT_MODAL_STATUS,EDIT_TODO_DATA,
   RESET_TODO,HANDLE_MULTIPLE_DELETE_DATA
 ,HANDLE_MULTIPLE_COMPLETE_DATA,HANDLE_MULTIPLE_COPY_DATA
-,DELETE_FROM_COMPLETE_DATA,ADD_TODO_DATA_FROM_UNCOMPLETE} from "../Actions/index";
+,DELETE_FROM_COMPLETE_DATA,ADD_TODO_DATA_FROM_UNCOMPLETE, MANAGE_CU_HISTORY} from "../Actions/index";
 const initialState = {
     todoData:[],
     setTodo:{title:""},
     setAddModal:{status:false},
     completeData:[],
     setEditModal:{status:false},
+    manageHistory:[]
     };
 export default function reducer(state = initialState, action){
     switch (action.type) {
@@ -48,6 +49,11 @@ export default function reducer(state = initialState, action){
         ...state,
         todoData:[...state.todoData,action.payload]
 
+      }
+    case MANAGE_CU_HISTORY:
+      return{
+        ...state,
+        manageHistory:[...state.manageHistory,action.payload]
       }
     case EDIT_MODAL_STATUS:
       return{

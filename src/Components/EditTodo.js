@@ -11,7 +11,7 @@ function EditTodo() {
   const handleClose=()=>{
     dispatch(setEditTodoModalStatus({status:false}))
   }
-  
+
   const handleSubmit=(e)=>{
     e.preventDefault();
     dispatch(editTodoData({
@@ -19,13 +19,13 @@ function EditTodo() {
       desc:e.target.desc.value,
       id:editData.id,
       dateTime:editData.dateTime,
-      uDateTime:new Date().toLocaleString(),
-      
+      uDateTime:new Date().toISOString(),
+
     }))
     dispatch(resetTodo())
     handleClose();
   };
-  
+
   return (
     <div>
       <Modal show={show.status} onHide={handleClose}>
@@ -36,7 +36,7 @@ function EditTodo() {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>title</Form.Label>
-              <Form.Control type="text" name="title" placeholder="Enter title" 
+              <Form.Control type="text" name="title" placeholder="Enter title"
               defaultValue={editData.title}
               required/>
             </Form.Group>

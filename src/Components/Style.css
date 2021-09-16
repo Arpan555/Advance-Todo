@@ -9,17 +9,19 @@
     display: inline-block;
   }
 
-.icon-detail {
+.icon-detail-todo {
     display: none;
-    position: absolut;
-    background-color: white;
+    position: left;
+    background-color:whitesmoke;
+
     height: auto;
-    width: 250px;
-    padding: 25px 30px;
+    width: auto;
+    padding-left: 30%;
+
     
   }
 
-.icon:hover .icon-detail{
+.icon:hover .icon-detail-todo{
     display: block;
   }
 

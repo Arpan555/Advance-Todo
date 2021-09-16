@@ -17,14 +17,14 @@ function AddTodo() {
       set:false,
       title:e.target.title.value,
       desc:e.target.desc.value,
-      dateTime:new Date().toLocaleString(),
+      dateTime:new Date().toISOString(),
       id:cuid()},
-      
+
       ))
     handleClose();
   };
   useEffect(() => {
-   
+
   }, [])
   return (
     <div>
@@ -36,7 +36,7 @@ function AddTodo() {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-2" controlId="formBasicEmail">
               <Form.Label>title</Form.Label>
-              <Form.Control type="text" name="title" placeholder="Enter title" 
+              <Form.Control type="text" name="title" placeholder="Enter title"
               required/>
             </Form.Group>
             <Form.Group className="mb-2" controlId="formBasicEmail">
