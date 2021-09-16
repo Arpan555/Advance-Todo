@@ -1,5 +1,25 @@
 .todos{
-    height: auto;
+    height: 40/5;
     width: 50%;
-    border-radius: 1px;
+    border-radius: 1px solid black;
 }
+
+.icon {
+    position: relative;
+    display: inline-block;
+  }
+
+.icon-detail {
+    display: none;
+    position: absolut;
+    background-color: white;
+    height: auto;
+    width: 250px;
+    padding: 25px 30px;
+    
+  }
+
+.icon:hover .icon-detail{
+    display: block;
+  }
+

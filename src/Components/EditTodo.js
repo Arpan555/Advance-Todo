@@ -19,7 +19,7 @@ function EditTodo() {
       desc:e.target.desc.value,
       id:editData.id,
       dateTime:editData.dateTime,
-      uDateTime:new Date().toISOString(),
+      uDateTime:new Date().toLocaleString(),
       
     }))
     dispatch(resetTodo())

@@ -7,7 +7,9 @@ import {
     RESET_TODO,
     HANDLE_MULTIPLE_DELETE_DATA,
   HANDLE_MULTIPLE_COMPLETE_DATA,
-  HANDLE_MULTIPLE_COPY_DATA} from "./index";
+  HANDLE_MULTIPLE_COPY_DATA,
+  ADD_TODO_DATA_FROM_UNCOMPLETE,
+  DELETE_FROM_COMPLETE_DATA} from "./index";
 const createData=[]
 const updateData=[]
 const completeData=[]
@@ -64,7 +66,21 @@ export const handleMultipleCompleteData=(data)=>{
     payload:data
   }
 }
+export const addTodoDataFromUncomplete=(data)=>{
+  return{
+    type:ADD_TODO_DATA_FROM_UNCOMPLETE,
+    payload:data
+  }
+}
+export const deleteFromCompleteData=(data)=>{
+  return{
+    type:DELETE_FROM_COMPLETE_DATA,
+    payload:data
+  }
+}
 export const handleMultipleCopyData=(data)=>{
+  createData.push(data)
+  localStorage.setItem("createdData",JSON.stringify(createData))
   return{
     type:HANDLE_MULTIPLE_COPY_DATA,
     payload:data

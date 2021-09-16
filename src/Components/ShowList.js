@@ -5,9 +5,10 @@ import {Card} from "react-bootstrap";
 import AddTodo from "./AddTodo";
 import EditTodo from "./EditTodo";
 import {setAddTodoModalStatus,setTodoData,setEditTodoModalStatus,
-  handleMultipleDeleteData,handleMultipleCompleteData,handleMultipleCopyData} from "../Redux/Actions/allActions";
+  handleMultipleDeleteData,handleMultipleCompleteData,handleMultipleCopyData,
+  addTodoDataFromUncomplete,deleteFromCompleteData} from "../Redux/Actions/allActions";
 import "./Style.css"
-
+import cuid from "cuid";
 export default function ShowList() {
   const [isSelect,setIsSelect]=useState()
   const [toggle,setToggle]=useState(false)
@@ -15,7 +16,6 @@ export default function ShowList() {
   const editModalStatus=useSelector(state=>state.reducer.setEditModal);
   const data=useSelector(state=>state.reducer.todoData)
   const cData=useSelector(state=>state.reducer.completeData)
-  const cpyData=useSelector(state=>state.reducer.copyData)
   const create=localStorage.getItem("createdData")
   const update=localStorage.getItem("updatedData")
   const complete=localStorage.getItem("completedData")
@@ -53,6 +53,7 @@ const handleMultipleDelete = () => {
       })
       dispatch(handleMultipleDeleteData(arrId))
   }
+
 const handleMultipleComplete=()=>{
   let arrId = []
      isSelect.map((del) => {
@@ -62,25 +63,31 @@ const handleMultipleComplete=()=>{
        return del
       })
       const compData=data.filter(todo=> arrId.includes(todo.id))
+      compData.map(data=> data.cDateTime=new Date().toLocaleString())
       if(compData.length>0){
-      dispatch(handleMultipleCompleteData({compData,cDateTime:new Date().toISOString()}))
+      dispatch(handleMultipleCompleteData({compData}))
       dispatch(handleMultipleDeleteData(arrId))
       }
-}
-const handleHistory=()=>{
-  setToggle(!toggle)
 }
 
 const handleMultipleCopy=()=>{
   let arrId = []
      isSelect.map((del) => {
         if(del.set) {
-            arrId.push(del.id)
+            arrId.push(del)
         }
        return del
       })
-     const copyData= data.filter(todo=> arrId.includes(todo.id) )
-     dispatch(handleMultipleCopyData(copyData))
+      arrId.map(data=> {data.id=cuid() 
+      data.title= "Copy of "+ data.title
+      data.dateTime=new Date().toLocaleString() } )
+      dispatch(handleMultipleCopyData(arrId))
+
+    }
+const handleUncompleteData=(cdata)=>{
+  cdata.unDateTime=new Date().toLocaleString()
+  dispatch(addTodoDataFromUncomplete(cdata))
+  dispatch(deleteFromCompleteData(cdata))
 }
 return (
     <div style={{ textAlign:"left"}}>
@@ -91,7 +98,6 @@ return (
           Add New Todo
         </Button>
       </h1>
-      
       <div style={{float: 'left'}}>
         <h2>Todo</h2>
         {data && data.map((todo)=>
@@ -108,61 +114,35 @@ return (
                         d.set=checked;
                       }
                       return d
-                    })
-                  )
-                 }
-                }/>
-                
-              </Card.Body>
-              <i className="fa fa-history fa-2x" style={{textAlign:"center"}} onClick={()=>handleHistory()}/>
-              <Card.Title>{toggle && createDateTime.map(data=> (data.id===todo.id)?
-               <><p>createdAt:{data.dateTime}</p>
-              </>: "" )}
-              {updateDateTime && toggle && updateDateTime.map(data=> (data.id===todo.id)?
-              <><p>updatedAt:{data.uDateTime}</p>
+                }))}}/>
+                </Card.Body>
+                <input type="button" value="History" onClick={()=>setToggle(!toggle)}/>
+                {toggle && <p>createdAt:{todo.dateTime}</p>}
+                {updateDateTime && toggle && updateDateTime.map(data=> (data.id===todo.id)?
+                  < ><p>updatedAt:{data.uDateTime}</p>
               </>:"")}
-              </Card.Title>
-
-          </Card>)}
-
-          { data.length>0 ? <> <input type="button" className="btn btn-primary m-3" value="Delete" 
-          onClick={()=>handleMultipleDelete()} />
-          <input type="button" className="btn btn-primary m-3" value="Complete" 
-          onClick={()=>handleMultipleComplete()} />
-          <input type="button" className="btn btn-primary m-3" value="Copy" 
-          onClick={()=>handleMultipleCopy()} /> </>:""}
-          </div>
-         
-      <hr/>
+          </Card>)}<br/>
+            { data.length>0 ? <> <input type="button" className="btn btn-primary m-3" value="Delete" 
+              onClick={()=>handleMultipleDelete()} />
+            <input type="button" className="btn btn-primary m-3" value="Complete" 
+              onClick={()=>handleMultipleComplete()} />
+            <input type="button" className="btn btn-primary m-3" value="Copy" 
+              onClick={()=>handleMultipleCopy()} /> </>:""}
+          </div><hr/>
           <div style={{float: 'right'}}>
-        <h2>Completed Todo</h2>
-        {cData && cData.map(cdata=>
-              
-              <Card style={{ width: '15rem' , height: "auto" , marginBottom:"15px"}}>
+            <h2>Completed Todo</h2>
+            {cData && cData.map(cdata=>
+              <Card>
                 <Card.Body>
-                    {cdata.compData.map(cTodo=>
-                    <>
-                        <Card.Text>Title:{cTodo.title}</Card.Text>
-                        <Card.Text>Desc:{cTodo.desc}</Card.Text>
-                    </>)}
+                    <Card.Text>Title:{cdata.title}</Card.Text>
+                    <Card.Text>Desc:{cdata.desc}</Card.Text>
+                    <input type="button" value="History" onClick={()=>setToggle(!toggle)}/>
+                {toggle && <p>CompletedAt:{cdata.cDateTime}</p> }
+                    <input type="button" className="btn btn-primary m-2" value="Uncomplete" onClick={()=>handleUncompleteData(cdata)}/>
                 </Card.Body>
               </Card>)}
-
-          <br/><hr/>
-          <h2>Copy Data</h2>
-          {cpyData && cpyData.map(ctodo=>
-          ctodo.map(com=>
-            <Card style={{ width: '15rem' , height: "auto" , margin:"15px"}}>
-            <Card.Body>
-              <Card.Title>Title:-{com.title}</Card.Title>
-              <Card.Text>Desc-{com.desc}</Card.Text>
-            </Card.Body>
-
-          </Card>))}
-          
+                  
           </div>
-          
-      
     </div>
   );
 }

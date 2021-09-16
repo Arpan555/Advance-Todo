@@ -17,7 +17,7 @@ function AddTodo() {
       set:false,
       title:e.target.title.value,
       desc:e.target.desc.value,
-      dateTime:new Date().toISOString(),
+      dateTime:new Date().toLocaleString(),
       id:cuid()},
       
       ))
